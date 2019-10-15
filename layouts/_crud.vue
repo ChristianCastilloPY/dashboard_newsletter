@@ -3,7 +3,7 @@
     <div class="d-flex flex-nowrap" style="height:100vh">
       <div
         class="bg-dark"
-        style="height:100vh;width:200px;margin-left:-130px                            "
+        style="height:100vh;width:200px;margin-left:-130px; position:fixed                       "
       >
         <div class="mt-5 ml-5 mr-5">
           <a
@@ -23,11 +23,11 @@
         </div>
       </div>
 
-      <div class="w-100" style="margin:0px;padding:0px">
+      <div class="w-100 ml-5" style="margin:5px;padding:0px; position:absolute">
         <a href="/all">
           <button
             type="button"
-            class="m-1 btn btn-light bg-light border-0"
+            class="m-1 ml-5 btn btn-light bg-light border-0"
             style="color:gray"
           >
             HOME
@@ -35,15 +35,15 @@
         </a>
         <div class="    d-flex justify-content-between">
           <h3
-            class="w-90 mt-3 mb-3 navbar navbar-expand-lg navbar-light bg-light"
+            class="w-90 mt-3 ml-5 mb-3 navbar navbar-expand-lg navbar-light bg-light"
           >
             Newsletter = {{ slug.post }}
           </h3>
         </div>
 
-        <div v-if="AddformActualizar == true">
+        <div v-if="AddformActualizar == true" class="mr-5">
           <section class="form">
-            <form action="" class="text-center">
+            <form action="" class="text-center mr-5">
               <input
                 v-model="title"
                 @keyup.enter="crearPaciente"
@@ -210,7 +210,7 @@
                       <!-- Botón para mostrar el formulario de actualizar -->
                       <button
                         @click="verFormActualizar(index)"
-                        class="btn btn-warning mb-2"
+                        class="btn btn-warning "
                       >
                         Actualizar
                       </button>
