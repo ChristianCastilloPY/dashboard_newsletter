@@ -1,59 +1,149 @@
-/nativoo
-// html:
-          //'<div class="row">' +
-          //'<img ' +
-          //'src=' +
-          //this.cards[index].image +
-          //'class="card-img rounded-circle" style="width:8rem; margin-left:12rem;border-radius: 50%"/>' +
-          //'<h6 class="card p-1 col-2" style="margin-left:3rem;height:50%;color:orange">DAILY</h6>' +
-          //' </div>' +
-          //'<div class="card-body">' +
-          //'<h4 class="card-title text-center">' +
-          //this.cards[index].title +
-          //'</h4>' +
-          //'<p class="card-text text-muted mx-2 text-center">' +
-          //this.cards[index].description +
-          //'</p>' +
-          //' </div>' +
-          //' </div>' +
-          //'<input type="email" v-model="form.email" style="width:90%" />' +
-          //'<button @click="suscribe" class="btn" ' +
-          //'style="background-color:rgba(237, 145, 33,0.9);color:white;width:90%">SUBSCRIBE</button>',
-          // showConfirmButton: true,
-          // confirmButtonText: 'Yes, delete it!'
+//index
+<template>
+  <div class="container mt-5">
+    <!-- /passes es considerado un booleano, la llave para hacer pasar o no -->
+    <ValidationObserver ref="observer" v-slot="{ passes }">
+      <b-form @submit.prevent="passes(onSubmit)">
+        <ValidationProvider
+          rules="required|email"
+          name="email"
+          v-slot="{ errors }"
+        >
+          <b-form-group label="Email address:">
+            <b-form-input
+              type="email"
+              v-model="form.email"
+              placeholder="Enter email"
+            >
+            </b-form-input>
+            <small class="form-text text-danger">{{ errors[0] }}</small>
+          </b-form-group>
+        </ValidationProvider>
 
-/modificado
+        <ValidationProvider
+          rules="required"
+          name="password"
+          v-slot="{ errors }"
+        >
+          <b-form-group label="password">
+            <b-form-input
+              type="password"
+              v-model="form.password"
+              placeholder="Enter password"
+            >
+            </b-form-input>
+            <small class="form-text text-danger">{{ errors[0] }}</small>
+          </b-form-group>
+        </ValidationProvider>
 
-this.$swal({
-// html:
-          //'<div class="row">' +
-          //'<img ' +
-          //'src=' +
-          //this.cards[index].image +
-          //'class="card-img rounded-circle" style="width:8rem; margin-left:12rem;border-radius: 50%"/>' +
-          //'<h6 class="card p-1 col-2" style="margin-left:3rem;height:50%;color:orange">DAILY</h6>' +
-          //' </div>' +
-          //'<div class="card-body">' +
-          //'<h4 class="card-title text-center">' +
-          //this.cards[index].title +
-          //'</h4>' +
-          //'<p class="card-text text-muted mx-2 text-center">' +
-          //this.cards[index].description +
-          //'</p>' +
-          //' </div>' +
-          //' </div>' +
-          //'<input type="email" v-model="form.email" style="width:90%" />' +
-          //'<button @click="suscribe" id="enviar" class="btn" ' +
-          //'style="background-color:rgba(237, 145, 33,0.9);color:white;width:90%">SUBSCRIBE</button>',
-          // showConfirmButton: true,
-          // confirmButtonText: 'Yes, delete it!'
+        <b-button type="submit" variant="primary" block>
+          Submit
+        </b-button>
+      </b-form>
+    </ValidationObserver>
+  </div>
+</template>
 
-  onBeforeOpen: () => {
-    const content = Swal.getContent()
-    const $ = content.querySelector.bind(content)
+<script>
+import axios from 'axios'
+import { mapMutations } from 'vuex'
+export default {
+  data() {
+    return {
+      form: {
+        email: '',
+        password: ''
+      },
+      valor: false
+    }
+  },
+  methods: {
+    ...mapMutations(['login']),
+    onSubmit() {
+      const endPoint = 'https://newsletters.academlo.com/api/v1/auth/login'
+      axios.post(endPoint, this.form).then((response) => {
+        const user = response.data
+        this.login(user)
+        this.$router.push('/all')
+      })
 
-    const enviar = $('#enviar')
+      alert('La sesión se inició correctamente')
+    }
+  }
+}
+</script>
 
 
 
-})
+
+
+
+//post
+<template>
+ <b-button @click="onSubmit" variant="primary" block>
+   Submit
+ </b-button>
+</template>
+<script>
+import axios from 'axios'
+// import { mapMutations } from 'vuex'
+export default {
+ methods: {
+   onSubmit() {
+     const url = 'https://newsletters.academlo.com/api/v1/newsletters'
+     const data = {
+       title: 'titulo prueba',
+       description: 'description prueba',
+       target: '100'
+     }
+     axios
+       .post(url, data)
+       .then((response) => {
+         alert('si se creo el post')
+       })
+       .catch((error) => {
+         if (error.response.status === 401) {
+           alert('no exite el usuario en la base de datos')
+         } else if (error.response.status === 422) {
+           alert('no estoy enviando bien la informacion')
+         } else {
+           alert('tuvimos un error desconocido')
+         }
+       })
+   }
+ }
+}
+</script>
+
+
+
+
+
+
+//delete
+<template>
+  <div class="container mt-5">
+    <button @click="deleteNewsletter(4)">
+      Eliminar Boletin
+    </button>
+  </div>
+</template>
+<script>
+import axios from 'axios'
+export default {
+  methods: {
+    deleteNewsletter(id) {
+      const endPoint =
+        'https://newsletters.academlo.com/api/v1/newsletters/' + id
+      axios
+        .delete(endPoint)
+        .then((response) => {
+          alert('Se elimino exitosamente el boletin')
+        })
+        .catch(() => {
+          alert('Tuvimos un error')
+        })
+    }
+  }
+}
+</script>

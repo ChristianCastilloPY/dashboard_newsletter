@@ -20,6 +20,15 @@
         </div>
       </div>
       <div class=" w-100" style="margin:0px;padding:0px">
+        <a href="/all">
+          <button
+            type="button"
+            class="m-1 btn btn-light bg-light border-0"
+            style="color:gray"
+          >
+            HOME
+          </button>
+        </a>
         <div class="d-flex justify-content-start ml-5 mt-2 bg-gray">
           <h3>Logo</h3>
         </div>

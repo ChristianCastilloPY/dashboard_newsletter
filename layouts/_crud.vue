@@ -24,11 +24,23 @@
       </div>
 
       <div class="w-100" style="margin:0px;padding:0px">
-        <h3
-          class="ml-3 mt-3 mb-3 navbar navbar-expand-lg navbar-light bg-light"
-        >
-          Newsletter = {{ slug.post }}
-        </h3>
+        <a href="/all">
+          <button
+            type="button"
+            class="m-1 btn btn-light bg-light border-0"
+            style="color:gray"
+          >
+            HOME
+          </button>
+        </a>
+        <div class="    d-flex justify-content-between">
+          <h3
+            class="w-90 mt-3 mb-3 navbar navbar-expand-lg navbar-light bg-light"
+          >
+            Newsletter = {{ slug.post }}
+          </h3>
+        </div>
+
         <div v-if="AddformActualizar == true">
           <section class="form">
             <form action="" class="text-center">
@@ -331,7 +343,7 @@
                       </button>
                       <!-- Botón para borrar -->
                       <button
-                        @click="borrarPaciente(index2)"
+                        @click="borrarPacientedos(index2)"
                         class="btn btn-danger"
                       >
                         Borrar
@@ -396,6 +408,7 @@ export default {
     crearPaciente() {
       this.AddformActualizar = false
       // Anyadimos a nuestra lista
+      const endPointed = 'https://newsletters.academlo.com/api/v1/newsletters'
       this.cards.push({
         id: new Date(),
         title: this.title,
@@ -404,15 +417,19 @@ export default {
         subscribed: this.subscribed,
         image: this.image
       })
-      this.cardstag.newsletters.push({
-        id: new Date(),
-        title: this.title,
-        description: this.description,
-        target: this.target,
-        subscribed: this.subscribed,
-        image: this.image
-      })
+
+      console.log(this.cards[this.cards.length - 1])
+      axios
+        .post(endPointed, this.cards[this.cards.length - 1])
+        .then((response) => {
+          console.log(response.data)
+          alert('Se creo exitosamente el boletin')
+        })
+        .catch(() => {
+          alert('Tuvimos un error')
+        })
     },
+
     Agregar() {
       this.AddformActualizar = true
     },
@@ -438,7 +455,44 @@ export default {
     },
     borrarPaciente(index) {
       // Borramos de la lista
+      console.log(index)
+
+      const endPoint =
+        'https://newsletters.academlo.com/api/v1/newsletters/' +
+        this.cards[index].id
+      console.log(endPoint)
+      console.log(this.cards[index].id)
+      axios
+        .delete(endPoint)
+        .then((response) => {
+          alert('Se elimino exitosamente el boletin')
+          console.log('Se elimino correctamente')
+        })
+        .catch(() => {
+          alert('Tuvimos un error')
+        })
+
       this.cards.splice(index, 1)
+    },
+    borrarPacientedos(index) {
+      // Borramos de la lista
+      console.log(index)
+
+      const endPoint =
+        'https://newsletters.academlo.com/api/v1/newsletters/' +
+        this.cardstag.newsletters[index].id
+      console.log(endPoint)
+      console.log(this.cardstag.newsletters[index].id)
+      axios
+        .delete(endPoint)
+        .then((response) => {
+          alert('Se elimino exitosamente el boletin')
+          console.log('Se elimino correctamente')
+        })
+        .catch(() => {
+          alert('Tuvimos un error')
+        })
+
       this.cardstag.newsletters.splice(index, 1)
     },
     guardarActualizacion(index) {

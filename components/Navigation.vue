@@ -11,6 +11,15 @@
               <fa :icon="['fas', 'search']" />
               <fa :icon="['fas', 'user']" />
             </h3>
+            <a href="/dashboard/newsletters">
+              <button
+                type="button"
+                class="m-1 btn btn-light bg-light border-0"
+                style="color:orange"
+              >
+                Dashboard
+              </button>
+            </a>
           </div>
         </div>
       </div>
